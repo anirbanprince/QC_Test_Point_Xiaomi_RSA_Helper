@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <group
+        >
+
+        <item
+            android:id="@+id/about"
+            android:title="About Us"
+            android:icon="@drawable/info"
+            app:showAsAction="always"
+            android:checkable="true"
+            />
+
+
+
+        <item
+            android:id="@+id/about"
+            android:title="About Us"
+            android:icon="@drawable/info"
+            app:showAsAction="always"
+            android:checkable="true"
+            />
+
+
+
+
+    </group>
+
+</menu>
