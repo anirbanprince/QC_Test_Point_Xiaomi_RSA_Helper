@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D8E2DC">
+
+    <!-- Centered GridLayout -->
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:rowCount="2"
+        android:columnCount="1"
+        android:padding="16dp">
+
+        <!-- First CardView -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_margin="16dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="10dp"
+            android:backgroundTint="#ECF8F1">
+
+            <TextView
+                android:id="@+id/testPoint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Test Point"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Second CardView -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_margin="16dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="10dp"
+            android:backgroundTint="#ECF8F1">
+
+            <TextView
+                android:id="@+id/rsaHelper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="RSA Helper"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+
+</FrameLayout>
