@@ -3,10 +3,13 @@ package com.proseobd.testpoint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -30,7 +33,6 @@ public class NastedAdapter extends RecyclerView.Adapter<NastedAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull NastedAdapter.ViewHolder holder, int position) {
         holder.mTv.setText(mList.get(position));
-
     }
 
     @Override
@@ -43,11 +45,13 @@ public class NastedAdapter extends RecyclerView.Adapter<NastedAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTv;
+        private ImageView image;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTv = itemView.findViewById(R.id.nestedItemTv);
+            image = itemView.findViewById(R.id.image);
         }
     }
 }

@@ -8,15 +8,30 @@
     app:cardElevation="1dp"
     android:layout_margin="8dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nestedItemTv"
-        android:text="Model Name"
-        android:textColor="#8c8c8c"
-        android:textSize="16sp"
-        android:layout_gravity="center"
-        android:textStyle="bold"/>
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nestedItemTv"
+            android:text="Model Name"
+            android:textColor="#8c8c8c"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            />
+
+    </LinearLayout>
+
+
 
 
 </androidx.cardview.widget.CardView>
