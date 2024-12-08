@@ -24,7 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:navigationIcon="@drawable/menu"
-                android:background="@color/material_dynamic_neutral0"
+                app:navigationIconTint="@color/black"
+                android:background="#E5293685"
                 android:elevation="0dp"
                 app:menu="@menu/toolbar_menu"
                 />

@@ -1,6 +1,7 @@
 package com.proseobd.testpoint;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,10 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frame;
     MaterialToolbar toolbar;
     NavigationView navigationView;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,17 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.NavigationView);
 
+        // Load theme preference
+        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame,new Test_PointFragment()).commit();
-        
+        // Fragment Manager (Optional based on your app's functionality)
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Test_PointFragment()).commit();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 MainActivity.this, drawer_Layout, toolbar, R.string.open, R.string.close
@@ -52,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.rate) {
                     openAppOnPlayStore();
-                    return true; // Event consumed
+                    return true;
                 } else if (item.getItemId() == R.id.share) {
                     shareContent();
-                    return true; // Event consumed
+                    return true;
                 }
-                return false; // Event not consumed, propagate further
+                return false;
             }
         });
 
@@ -69,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.notification) {
                     Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
+                } else if (item.getItemId() == R.id.nightmode) {
+                    toggleNightMode();
                 } else if (item.getItemId() == R.id.Other) {
                     Toast.makeText(MainActivity.this, "Other Apps", Toast.LENGTH_SHORT).show();
                 }
@@ -76,6 +87,21 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    // Toggle Night Mode
+    private void toggleNightMode() {
+        boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            editor.putBoolean("NightMode", false);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            editor.putBoolean("NightMode", true);
+        }
+        editor.apply();
     }
 
     // Method to open the app on Play Store
@@ -102,6 +128,4 @@ public class MainActivity extends AppCompatActivity {
                 .createChooserIntent();
         startActivity(shareIntent);
     }
-
-
 }

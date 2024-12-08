@@ -5,11 +5,14 @@
         android:id="@+id/rate"
         android:title="Rate Us"
         android:icon="@drawable/rate"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"
+        />
 
     <item
         android:id="@+id/share"
         android:title="Share"
         android:icon="@drawable/share"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"
+
+        />
 </menu>

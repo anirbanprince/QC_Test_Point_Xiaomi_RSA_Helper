@@ -20,6 +20,13 @@
             android:icon="@drawable/notification"
             app:showAsAction="always"
             android:checkable="true"/>
+        <item
+            android:id="@+id/nightmode"
+            android:title="Night Mode"
+            android:icon="@drawable/night"
+            app:showAsAction="always"
+            android:checkable="true"
+            />
 
 
 
