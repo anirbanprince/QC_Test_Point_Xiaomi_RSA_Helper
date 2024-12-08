@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
-        // Fragment Manager (Optional based on your app's functionality)
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Test_PointFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FirstFragment()).commit();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 MainActivity.this, drawer_Layout, toolbar, R.string.open, R.string.close
