@@ -1,5 +1,7 @@
 package com.proseobd.testpoint;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ShareCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
@@ -22,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
     NavigationView navigationView;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,56 +33,75 @@ public class MainActivity extends AppCompatActivity {
         drawer_Layout = findViewById(R.id.drawer_layout);
         frame = findViewById(R.id.frame);
         toolbar = findViewById(R.id.toolbar);
-        navigationView = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.NavigationView);
+
 
         FragmentManager fragmentManager=getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame,new FirstFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.frame,new Test_PointFragment()).commit();
+        
 
-
-        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle
-                (MainActivity.this,drawer_Layout,toolbar, R.string.open,R.string.close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                MainActivity.this, drawer_Layout, toolbar, R.string.open, R.string.close
+        );
         drawer_Layout.addDrawerListener(toggle);
         toggle.syncState();
 
-
+        // Toolbar Menu Item Click Listener
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
-                if(item.getItemId()==R.id.share){
-                    Toast.makeText(MainActivity.this, "Share Clicked", Toast.LENGTH_SHORT).show();
-                } else if(item.getItemId()==R.id.rate){
-                    Toast.makeText(MainActivity.this, "Rate Clicked", Toast.LENGTH_SHORT).show();
+                if (item.getItemId() == R.id.rate) {
+                    openAppOnPlayStore();
+                    return true; // Event consumed
+                } else if (item.getItemId() == R.id.share) {
+                    shareContent();
+                    return true; // Event consumed
                 }
-
-
-                return false;
+                return false; // Event not consumed, propagate further
             }
         });
 
-
-
-
+        // Navigation Drawer Listener
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                if (item.getItemId()==R.id.about){
-                    Toast.makeText(MainActivity.this, "About Clicked", Toast.LENGTH_SHORT).show();
-                } else if (item.getItemId()==R.id.notification){
-                    Toast.makeText(MainActivity.this, "Notification Clicked", Toast.LENGTH_SHORT).show();
-                    } else if (item.getItemId()==R.id.Other){
-                    Toast.makeText(MainActivity.this, "Other Clicked", Toast.LENGTH_SHORT).show();
+                if (item.getItemId() == R.id.about) {
+                    Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
+                } else if (item.getItemId() == R.id.notification) {
+                    Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
+                } else if (item.getItemId() == R.id.Other) {
+                    Toast.makeText(MainActivity.this, "Other Apps", Toast.LENGTH_SHORT).show();
                 }
-                drawer_Layout.closeDrawer(navigationView);
-
-
-
+                drawer_Layout.closeDrawers();
                 return true;
             }
         });
-
-
-
     }
+
+    // Method to open the app on Play Store
+    private void openAppOnPlayStore() {
+        String packageName = getPackageName();
+        Uri uri = Uri.parse("market://details?id=" + packageName);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Uri webUri = Uri.parse("https://play.google.com/store/apps/details?id=" + packageName);
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, webUri);
+            startActivity(webIntent);
+        }
+    }
+
+    // Method to share content
+    private void shareContent() {
+        String shareText = "Check out this awesome app!";
+        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+                .setType("text/plain")
+                .setText(shareText)
+                .setChooserTitle("Share via")
+                .createChooserIntent();
+        startActivity(shareIntent);
+    }
+
+
 }
