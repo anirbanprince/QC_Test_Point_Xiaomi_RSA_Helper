@@ -1,49 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    tools:context=".Test_PointFragment">
+    android:orientation="vertical"
+    android:background="@color/background">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp">
 
-        <!-- Search Container with Card -->
-        <androidx.cardview.widget.CardView
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            android:theme="@style/Widget.App.SearchView"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search test points..."/>
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                app:iconifiedByDefault="false"
-                app:queryHint="Search test points..."
-                app:queryBackground="@android:color/transparent"
-                app:searchIcon="@drawable/ic_search"
-                android:theme="@style/SearchViewStyle" />
+    </com.google.android.material.card.MaterialCardView>
 
-        </androidx.cardview.widget.CardView>
-
-        <!-- RecyclerView with better styling -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_recyclervie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp"
-            android:scrollbars="none"
-            android:layout_marginHorizontal="8dp" />
-
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_recyclervie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="16dp"/>
 
     <!-- Empty State -->
     <LinearLayout
@@ -57,18 +43,17 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/ic_no_results"
-            android:alpha="0.6"/>
+            android:src="@drawable/ic_empty_state"
+            app:tint="@color/textSecondary"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="No results found"
             android:textSize="18sp"
-            android:textColor="@color/black"
-            android:alpha="0.7"/>
+            android:textColor="@color/textSecondary"
+            android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 public class FirstFragment extends Fragment {
 
-    CardView cvTestPoint, cvRSA;
-    TextView testPoint, rsaHelper;
+    CardView cvTestPoint, cvRSA, cvISP;
+    TextView testPoint, rsaHelper, ispPinout;
 
 
     @Override
@@ -25,6 +25,8 @@ public class FirstFragment extends Fragment {
         rsaHelper=view.findViewById(R.id.rsaHelper);
         cvTestPoint=view.findViewById(R.id.cvTestPoint);
         cvRSA=view.findViewById(R.id.cvRSA);
+        cvISP = view.findViewById(R.id.cvISP);
+        ispPinout = view.findViewById(R.id.ispPinout);
 
         cvTestPoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +45,15 @@ public class FirstFragment extends Fragment {
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction().replace(R.id.frame,new RSAFragment())
+                        .addToBackStack(null).commit();
+            }
+        });
+
+        cvISP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction().replace(R.id.frame, new ISPFragment())
                         .addToBackStack(null).commit();
             }
         });
