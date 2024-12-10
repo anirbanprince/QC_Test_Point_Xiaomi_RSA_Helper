@@ -4,29 +4,37 @@ import java.util.List;
 
 public class DataModel {
 
-    private List<String> nestedList;
-    private String itemText;
-    private boolean isExpandable;
+    private List<String> items;
+    private String title;
+    private boolean expandable;
 
-    public DataModel(List<String> itemList, String itemText) {
-        this.nestedList = itemList;
-        this.itemText = itemText;
-        isExpandable = false;
+    public DataModel(List<String> items, String title) {
+        this.items = items;
+        this.title = title;
+        this.expandable = false;
     }
 
-    public void setExpandable(boolean expandable) {
-        isExpandable = expandable;
+    public List<String> getItems() {
+        return items;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public List<String> getNestedList() {
-        return nestedList;
+        return items;
     }
 
     public String getItemText() {
-        return itemText;
+        return title;
     }
 
     public boolean isExpandable() {
-        return isExpandable;
+        return expandable;
+    }
+
+    public void setExpandable(boolean expandable) {
+        this.expandable = expandable;
     }
 }

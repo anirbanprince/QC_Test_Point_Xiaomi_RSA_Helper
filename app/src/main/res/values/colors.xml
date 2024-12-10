@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1A237E</color>
-    <color name="primaryDark">#0D1344</color>
-    <color name="accent">#3949AB</color>
-    <color name="background">#F5F5F5</color>
+    <!-- Light Theme Colors -->
+    <color name="primary">#FF5722</color>
+    <color name="primaryDark">#E64A19</color>
+    <color name="primaryLight">#FFCCBC</color>
+    <color name="accent">#FF9800</color>
     <color name="surface">#FFFFFF</color>
+    <color name="background">#FAFAFA</color>
     <color name="textPrimary">#212121</color>
     <color name="textSecondary">#757575</color>
     <color name="divider">#EEEEEE</color>
+    <color name="error">#B00020</color>
+    <color name="success">#4CAF50</color>
+    <color name="onPrimary">#FFFFFF</color>
+
+    <!-- Dark Theme Colors -->
+    <color name="primaryDarkLight">#FF7043</color>
+    <color name="onPrimaryDark">#000000</color>
+    <color name="accentDark">#FFB74D</color>
+    <color name="surfaceDark">#121212</color>
+    <color name="textPrimaryDark">#FFFFFF</color>
+    <color name="backgroundDark">#000000</color>
+    
+    <!-- Shimmer Color -->
+    <color name="shimmer_color">#DDDDDD</color>
 </resources>

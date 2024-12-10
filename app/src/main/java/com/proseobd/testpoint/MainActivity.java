@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.HapticFeedbackConstants;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -15,9 +19,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.view.WindowCompat;
+import androidx.core.splashscreen.SplashScreen;
+import androidx.fragment.app.FragmentFactory;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import com.proseobd.testpoint.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,16 +35,26 @@ public class MainActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
     NavigationView navigationView;
     SharedPreferences sharedPreferences;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Enable splash screen
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        
+        // Enable edge-to-edge
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        drawer_Layout = findViewById(R.id.drawer_layout);
-        frame = findViewById(R.id.frame);
-        toolbar = findViewById(R.id.toolbar);
-        navigationView = findViewById(R.id.NavigationView);
+        // Replace findViewById with binding
+        drawer_Layout = binding.drawerLayout;
+        frame = binding.frame;
+        toolbar = binding.toolbar;
+        navigationView = binding.NavigationView;
 
         // Load theme preference
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
@@ -46,13 +65,40 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FirstFragment()).commit();
+        // Add fragment transitions
+        getSupportFragmentManager().setFragmentFactory(new FragmentFactory());
+        getSupportFragmentManager().beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+            .replace(R.id.frame, new FirstFragment())
+            .commit();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 MainActivity.this, drawer_Layout, toolbar, R.string.open, R.string.close
         );
         drawer_Layout.addDrawerListener(toggle);
         toggle.syncState();
+
+        // Add navigation drawer animation
+        drawer_Layout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                float scaleFactor = 1 - (slideOffset * 0.1f);
+                float endScale = 0.9f + (scaleFactor * 0.1f);
+                
+                View contentView = drawer_Layout.getChildAt(0);
+                contentView.setScaleX(endScale);
+                contentView.setScaleY(endScale);
+                
+                drawerView.setScaleX(slideOffset);
+                drawerView.setScaleY(slideOffset);
+                drawerView.setAlpha(slideOffset);
+            }
+        });
 
         // Toolbar Menu Item Click Listener
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -73,12 +119,13 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                performHapticFeedback();
                 if (item.getItemId() == R.id.about) {
                     Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.notification) {
                     Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.nightmode) {
-                    toggleNightMode();
+
                 } else if (item.getItemId() == R.id.Other) {
                     Toast.makeText(MainActivity.this, "Other Apps", Toast.LENGTH_SHORT).show();
                 }
@@ -88,19 +135,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Toggle Night Mode
-    private void toggleNightMode() {
-        boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            editor.putBoolean("NightMode", false);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            editor.putBoolean("NightMode", true);
+    private void performHapticFeedback() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            view.performHapticFeedback(
+                HapticFeedbackConstants.VIRTUAL_KEY,
+                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+            );
         }
-        editor.apply();
     }
 
     // Method to open the app on Play Store
