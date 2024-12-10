@@ -99,6 +99,10 @@ public class Test_PointFragment extends Fragment {
         
         adapter = new ItemAdapter(filteredList);
         recyclerView.setAdapter(adapter);
+        
+        // Show/hide empty state
+        View emptyState = getView().findViewById(R.id.emptyStateContainer);
+        emptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void loadData2() {

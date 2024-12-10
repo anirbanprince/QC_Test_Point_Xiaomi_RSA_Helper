@@ -2,6 +2,7 @@ package com.proseobd.testpoint;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,11 +12,8 @@ import android.widget.TextView;
 
 public class FirstFragment extends Fragment {
 
-
-
+    CardView cvTestPoint, cvRSA;
     TextView testPoint, rsaHelper;
-
-
 
 
     @Override
@@ -25,8 +23,10 @@ public class FirstFragment extends Fragment {
 
         testPoint=view.findViewById(R.id.testPoint);
         rsaHelper=view.findViewById(R.id.rsaHelper);
+        cvTestPoint=view.findViewById(R.id.cvTestPoint);
+        cvRSA=view.findViewById(R.id.cvRSA);
 
-        testPoint.setOnClickListener(new View.OnClickListener() {
+        cvTestPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                getActivity().getSupportFragmentManager().beginTransaction()
@@ -38,7 +38,7 @@ public class FirstFragment extends Fragment {
 
 
 
-        rsaHelper.setOnClickListener(new View.OnClickListener() {
+        cvRSA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager()
