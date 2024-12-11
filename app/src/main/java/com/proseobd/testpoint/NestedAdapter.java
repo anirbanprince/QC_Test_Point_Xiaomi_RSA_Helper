@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,7 +52,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
             .error(android.R.drawable.ic_dialog_alert)
             .into(holder.imageView);
 
-        holder.imageView.setOnClickListener(v -> showImagePopup(v.getContext(), imageUrl));
+        holder.layLin.setOnClickListener(v -> showImagePopup(v.getContext(), imageUrl));
     }
 
     private void showImagePopup(Context context, String imageUrl) {
@@ -94,12 +95,14 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
     public class NestedViewHolder extends RecyclerView.ViewHolder {
         private TextView mTv, nestedItemCodeName;
         private ImageView imageView;
+        private LinearLayout layLin;
 
         public NestedViewHolder(@NonNull View itemView) {
             super(itemView);
             mTv = itemView.findViewById(R.id.nestedItemTv);
             imageView = itemView.findViewById(R.id.image);
             nestedItemCodeName = itemView.findViewById(R.id.nestedItemCodeName);
+            layLin = itemView.findViewById(R.id.layLin);
         }
     }
 } 
