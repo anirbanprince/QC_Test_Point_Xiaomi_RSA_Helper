@@ -9,7 +9,7 @@
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
     <color name="md_theme_light_surface">#FFFFFF</color>
     <color name="md_theme_light_onSurface">#212121</color>
-    <color name="md_theme_light_background">#FAFAFA</color>
+    <color name="md_theme_light_background">#F0F0F0</color>
     <color name="md_theme_light_error">#B00020</color>
     <color name="md_theme_light_success">#4CAF50</color>
 
@@ -20,9 +20,13 @@
     <color name="md_theme_dark_onPrimaryContainer">#EADDFF</color>
     <color name="md_theme_dark_secondary">#03DAC6</color>
     <color name="md_theme_dark_onSecondary">#000000</color>
-    <color name="md_theme_dark_surface">#121212</color>
+    <color name="md_theme_dark_surface">#1E1E1E</color>
+    <color name="md_theme_dark_surface_1">#232323</color>  <!-- dp1 -->
+    <color name="md_theme_dark_surface_2">#282828</color>  <!-- dp2 -->
+    <color name="md_theme_dark_surface_3">#2D2D2D</color>  <!-- dp3 -->
+    <color name="md_theme_dark_surface_4">#323232</color>  <!-- dp4 -->
     <color name="md_theme_dark_onSurface">#FFFFFF</color>
-    <color name="md_theme_dark_background">#121212</color>
+    <color name="md_theme_dark_background">#000000</color>
 
     <!-- Common Colors -->
     <color name="shimmer_color">#DDDDDD</color>

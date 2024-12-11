@@ -1,0 +1,5 @@
+<resources>
+    <style name="BottomSheetStyle" parent="Widget.Material3.BottomSheet">
+        <item name="android:background">@color/md_theme_dark_surface_3</item>
+    </style>
+</resources>

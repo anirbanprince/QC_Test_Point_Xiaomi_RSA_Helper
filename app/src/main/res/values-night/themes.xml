@@ -31,4 +31,27 @@
         <item name="android:textColorHint">@color/md_theme_dark_onSurface</item>
         <item name="android:textColor">@color/md_theme_dark_onSurface</item>
     </style>
+
+    <!-- Add this style -->
+    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="rippleColor">@color/md_theme_dark_primaryContainer</item>
+        <item name="cardBackgroundColor">@color/md_theme_dark_surface_1</item>
+    </style>
+
+    <!-- Add this style -->
+    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:background">@color/md_theme_dark_surface_2</item>
+        <item name="itemIconTint">@color/nav_item_colors_dark</item>
+        <item name="itemTextColor">@color/nav_item_colors_dark</item>
+        <item name="itemIconPadding">16dp</item>
+        <item name="itemHorizontalPadding">24dp</item>
+    </style>
+
+    <!-- Add this style -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">@color/md_theme_dark_surface_4</item>
+        <item name="tint">@color/md_theme_dark_primary</item>
+    </style>
 </resources>

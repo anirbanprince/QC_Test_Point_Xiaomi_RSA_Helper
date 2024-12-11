@@ -20,6 +20,7 @@
             android:layout_margin="16dp"
             app:cardElevation="4dp"
             app:cardCornerRadius="12dp"
+            android:backgroundTint="?attr/colorSurface"
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <androidx.appcompat.widget.SearchView
@@ -107,12 +108,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabFilter"
+        style="@style/Widget.App.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="Filter"
-        app:srcCompat="@drawable/ic_filter"
-        app:tint="?attr/colorOnPrimary"/>
+        app:srcCompat="@drawable/ic_filter"/>
 
 </LinearLayout>
