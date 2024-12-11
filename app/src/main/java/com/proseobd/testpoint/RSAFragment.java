@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +43,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
     private SearchView searchView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentTestPointBinding.inflate(inflater, container, false);
 
         // Setup filter FAB
@@ -298,27 +299,31 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     List<String> items = model.getItems();
                     List<String> codeNames = model.getCodeNames();
                     List<String> images = model.getImageUrls();
+                    
                     int start = Math.max(0, items.size() - 5);
-                    List<String> recentItems = items.subList(start, items.size());
-                    List<String> recentCodeNames = codeNames.subList(start, codeNames.size());
-                    List<String> recentImages = images.subList(start, images.size());
+                    List<String> recentItems = new ArrayList<>(items.subList(start, items.size()));
+                    List<String> recentCodeNames = new ArrayList<>(codeNames.subList(start, codeNames.size()));
+                    List<String> recentImages = new ArrayList<>(images.subList(start, images.size()));
+                    
                     filteredList.add(new DataModel(recentItems, recentImages, recentCodeNames, model.getTitle()));
                 }
                 break;
             case "favorite":
-                // Implement favorite logic based on SharedPreferences
                 SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
                 for (DataModel model : mList) {
                     List<String> favoriteItems = new ArrayList<>();
                     List<String> favoriteCodeNames = new ArrayList<>();
                     List<String> favoriteImages = new ArrayList<>();
+                    
                     List<String> items = model.getItems();
                     List<String> codeNames = model.getCodeNames();
                     List<String> images = model.getImageUrls();
+                    
                     for (int i = 0; i < items.size(); i++) {
                         String item = items.get(i);
                         if (prefs.getBoolean(item, false)) {
                             favoriteItems.add(item);
+                            favoriteCodeNames.add(codeNames.get(i));
                             favoriteImages.add(images.get(i));
                         }
                     }
@@ -337,13 +342,43 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
 
         for (DataModel model : filteredList) {
             List<String> items = model.getItems();
-            if (sortBy.equals("name")) {
-                Collections.sort(items);
-            } else {
-                // Sort by date if items have timestamps
-                // For now, reverse the list as a simple example
-                Collections.reverse(items);
+            List<String> codeNames = model.getCodeNames();
+            List<String> images = model.getImageUrls();
+            
+            // Create a list of indices to maintain the relationship
+            List<Integer> indices = new ArrayList<>();
+            for (int i = 0; i < items.size(); i++) {
+                indices.add(i);
             }
+            
+            // Sort indices based on the selected criteria
+            if (sortBy.equals("name")) {
+                indices.sort((i1, i2) -> items.get(i1).compareTo(items.get(i2)));
+            } else {
+                // For date sorting, reverse the indices
+                Collections.reverse(indices);
+            }
+            
+            // Create new sorted lists
+            List<String> sortedItems = new ArrayList<>();
+            List<String> sortedCodeNames = new ArrayList<>();
+            List<String> sortedImages = new ArrayList<>();
+            
+            // Rebuild all lists maintaining their relationships
+            for (Integer index : indices) {
+                sortedItems.add(items.get(index));
+                sortedCodeNames.add(codeNames.get(index));
+                sortedImages.add(images.get(index));
+            }
+            
+            // Replace the original lists with sorted ones
+            items.clear();
+            codeNames.clear();
+            images.clear();
+            
+            items.addAll(sortedItems);
+            codeNames.addAll(sortedCodeNames);
+            images.addAll(sortedImages);
         }
         adapter.notifyDataSetChanged();
     }
