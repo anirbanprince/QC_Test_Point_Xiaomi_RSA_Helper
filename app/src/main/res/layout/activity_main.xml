@@ -13,7 +13,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary"
+            android:background="@color/md_theme_light_primary"
             app:elevation="0dp">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -21,9 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_menu"
-                app:navigationIconTint="@color/onPrimary"
+                app:navigationIconTint="@color/md_theme_light_onPrimary"
                 app:menu="@menu/toolbar_menu"
-                app:titleTextColor="@color/onPrimary"/>
+                app:titleTextColor="@color/md_theme_light_onPrimary"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:background="@color/surface"
+        android:background="@color/md_theme_light_surface"
         app:headerLayout="@layout/header"
         app:menu="@menu/nav_menu"
         app:elevation="1dp"/>

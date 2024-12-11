@@ -3,6 +3,7 @@ package com.proseobd.testpoint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import com.proseobd.testpoint.databinding.ActivityMainBinding;
 
+import com.google.android.material.color.DynamicColors;
+
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawer_Layout;
@@ -38,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Enable dynamic colors
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            DynamicColors.applyToActivitiesIfAvailable(getApplication());
+        }
+        
         // Enable splash screen
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         

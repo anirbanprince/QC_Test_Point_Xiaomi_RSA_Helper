@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Coming Soon"
-        android:textColor="@color/accent_night"
+        android:textColor="@color/md_theme_dark_secondary"
         android:textSize="40sp"
         android:textStyle="bold" />
 

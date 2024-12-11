@@ -15,7 +15,7 @@
         android:padding="4dp"
         android:src="@drawable/app_logo"
         app:shapeAppearanceOverlay="@style/CircleImageView"
-        app:strokeColor="@color/onPrimary"
+        app:strokeColor="@color/md_theme_light_onPrimary"
         app:strokeWidth="2dp"/>
 
     <TextView
@@ -24,14 +24,14 @@
         android:text="@string/app_name"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/onPrimary"
+        android:textColor="@color/md_theme_light_onPrimary"
         android:layout_marginTop="16dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="v1.0.0"
-        android:textColor="@color/onPrimary"
+        android:textColor="@color/md_theme_light_onPrimary"
         android:alpha="0.8"
         android:layout_marginTop="4dp"/>
 </LinearLayout>

@@ -1,13 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.TestPoint" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Dynamic colors -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryContainer">@color/primaryLight</item>
-        <item name="colorOnPrimary">@color/onPrimary</item>
-        <item name="colorSecondary">@color/accent</item>
-        <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/textPrimary</item>
-        <item name="android:colorBackground">@color/background</item>
+        <!-- Dynamic colors will override these on Android 12+ -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
         
         <!-- System bars -->
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -24,14 +26,14 @@
     <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">4dp</item>
         <item name="cardCornerRadius">16dp</item>
-        <item name="rippleColor">@color/primaryLight</item>
+        <item name="rippleColor">@color/md_theme_light_primaryContainer</item>
     </style>
 
     <style name="Widget.App.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@android:color/transparent</item>
         <item name="searchIcon">@drawable/ic_search</item>
         <item name="queryHint">Search test points...</item>
-        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:textColorHint">@color/md_theme_light_onSurface</item>
     </style>
 
     <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
@@ -42,7 +44,7 @@
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/primary</item>
+        <item name="windowSplashScreenBackground">@color/md_theme_light_primary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
         <item name="windowSplashScreenAnimationDuration">300</item>
         <item name="postSplashScreenTheme">@style/Theme.TestPoint</item>
