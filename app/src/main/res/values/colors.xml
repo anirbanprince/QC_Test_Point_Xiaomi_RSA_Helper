@@ -1,33 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Material 3 Light Theme Colors -->
-    <color name="md_theme_light_primary">#FF5722</color>
-    <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#FFCCBC</color>
-    <color name="md_theme_light_onPrimaryContainer">#390C00</color>
-    <color name="md_theme_light_secondary">#FF9800</color>
-    <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_surface">#FFFFFF</color>
-    <color name="md_theme_light_onSurface">#212121</color>
-    <color name="md_theme_light_background">#F0F0F0</color>
-    <color name="md_theme_light_error">#B00020</color>
-    <color name="md_theme_light_success">#4CAF50</color>
-
-    <!-- Material 3 Dark Theme Colors -->
-    <color name="md_theme_dark_primary">#BB86FC</color>
-    <color name="md_theme_dark_onPrimary">#FFFFFF</color>
-    <color name="md_theme_dark_primaryContainer">#3700B3</color>
-    <color name="md_theme_dark_onPrimaryContainer">#EADDFF</color>
-    <color name="md_theme_dark_secondary">#03DAC6</color>
-    <color name="md_theme_dark_onSecondary">#000000</color>
-    <color name="md_theme_dark_surface">#1E1E1E</color>
-    <color name="md_theme_dark_surface_1">#232323</color>  <!-- dp1 -->
-    <color name="md_theme_dark_surface_2">#282828</color>  <!-- dp2 -->
-    <color name="md_theme_dark_surface_3">#2D2D2D</color>  <!-- dp3 -->
-    <color name="md_theme_dark_surface_4">#323232</color>  <!-- dp4 -->
-    <color name="md_theme_dark_onSurface">#FFFFFF</color>
-    <color name="md_theme_dark_background">#000000</color>
-
     <!-- Common Colors -->
     <color name="shimmer_color">#DDDDDD</color>
 </resources>

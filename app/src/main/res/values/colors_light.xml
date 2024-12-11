@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material 3 Light Theme Colors -->
+    <color name="md_theme_light_primary">#FF5722</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#FFCCBC</color>
+    <color name="md_theme_light_onPrimaryContainer">#390C00</color>
+    <color name="md_theme_light_secondary">#FF9800</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#212121</color>
+    <color name="md_theme_light_background">#F0F0F0</color>
+    <color name="md_theme_light_error">#B00020</color>
+    <color name="md_theme_light_success">#4CAF50</color>
+</resources> 
