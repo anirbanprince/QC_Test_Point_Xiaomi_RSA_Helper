@@ -6,12 +6,14 @@ public class DataModel {
 
     private List<String> items;
     private List<String> imageUrls;
+    private List<String> codeNames;
     private String title;
     private boolean expandable;
 
-    public DataModel(List<String> items, List<String> imageUrls, String title) {
+    public DataModel(List<String> items, List<String> imageUrls, List<String> codeNames, String title) {
         this.items = items;
         this.imageUrls = imageUrls;
+        this.codeNames = codeNames;
         this.title = title;
         this.expandable = false;
     }
@@ -42,5 +44,9 @@ public class DataModel {
 
     public List<String> getImageUrls() {
         return imageUrls;
+    }
+
+    public List<String> getCodeNames() {
+        return codeNames;
     }
 }

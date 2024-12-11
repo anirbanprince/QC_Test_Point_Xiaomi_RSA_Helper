@@ -101,6 +101,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 
                 // Check if any item in nested list matches
                 List<String> nestedItems = new ArrayList<>();
+                List<String> codeNameList = new ArrayList<>();
                 List<String> nestedImages = new ArrayList<>();
                 for (int i = 0; i < model.getNestedList().size(); i++) {
                     String item = model.getNestedList().get(i);
@@ -111,7 +112,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 }
                 
                 if (!nestedItems.isEmpty()) {
-                    filteredList.add(new DataModel(nestedItems, nestedImages, model.getTitle()));
+                    filteredList.add(new DataModel(nestedItems, nestedImages, codeNameList, model.getTitle()));
                 }
             }
         }
@@ -139,6 +140,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -153,7 +155,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                         }
                     }
                     if (!nestedList.isEmpty()) {
-                        DataModel newModel = new DataModel(nestedList, imageList, "Redgghgmi Series");
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Redgghgmi Series");
                         mList.add(newModel);
                         filteredList.add(newModel);
                         adapter.notifyDataSetChanged();
@@ -178,6 +180,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -191,7 +194,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "MI Series");
+                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"MI Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -206,6 +209,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -219,7 +223,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Redmi Note Series");
+                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Redmi Note Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -234,6 +238,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -247,7 +252,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Poco Series");
+                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Poco Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -292,11 +297,13 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 // Add last 5 items from each category
                 for (DataModel model : mList) {
                     List<String> items = model.getItems();
+                    List<String> codeNames = model.getCodeNames();
                     List<String> images = model.getImageUrls();
                     int start = Math.max(0, items.size() - 5);
                     List<String> recentItems = items.subList(start, items.size());
+                    List<String> recentCodeNames = codeNames.subList(start, codeNames.size());
                     List<String> recentImages = images.subList(start, images.size());
-                    filteredList.add(new DataModel(recentItems, recentImages, model.getTitle()));
+                    filteredList.add(new DataModel(recentItems, recentImages, recentCodeNames, model.getTitle()));
                 }
                 break;
             case "favorite":
@@ -304,8 +311,10 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
                 for (DataModel model : mList) {
                     List<String> favoriteItems = new ArrayList<>();
+                    List<String> favoriteCodeNames = new ArrayList<>();
                     List<String> favoriteImages = new ArrayList<>();
                     List<String> items = model.getItems();
+                    List<String> codeNames = model.getCodeNames();
                     List<String> images = model.getImageUrls();
                     for (int i = 0; i < items.size(); i++) {
                         String item = items.get(i);
@@ -315,7 +324,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                         }
                     }
                     if (!favoriteItems.isEmpty()) {
-                        filteredList.add(new DataModel(favoriteItems, favoriteImages, model.getTitle()));
+                        filteredList.add(new DataModel(favoriteItems, favoriteImages, favoriteCodeNames, model.getTitle()));
                     }
                 }
                 break;

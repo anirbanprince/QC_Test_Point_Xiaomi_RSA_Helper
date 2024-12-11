@@ -90,33 +90,32 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         } else {
             String lowercaseQuery = query.toLowerCase(Locale.getDefault());
             for (DataModel model : mList) {
-                // Check if category name matches
                 if (model.getItemText().toLowerCase(Locale.getDefault()).contains(lowercaseQuery)) {
                     filteredList.add(model);
                     continue;
                 }
-
-                // Check if any item in nested list matches
+                
                 List<String> nestedItems = new ArrayList<>();
                 List<String> nestedImages = new ArrayList<>();
+                List<String> nestedCodeNames = new ArrayList<>();
                 for (int i = 0; i < model.getNestedList().size(); i++) {
                     String item = model.getNestedList().get(i);
                     if (item.toLowerCase(Locale.getDefault()).contains(lowercaseQuery)) {
                         nestedItems.add(item);
                         nestedImages.add(model.getImageUrls().get(i));
+                        nestedCodeNames.add(model.getCodeNames().get(i));
                     }
                 }
-
+                
                 if (!nestedItems.isEmpty()) {
-                    filteredList.add(new DataModel(nestedItems, nestedImages, model.getTitle()));
+                    filteredList.add(new DataModel(nestedItems, nestedImages, nestedCodeNames, model.getTitle()));
                 }
             }
         }
-
+        
         adapter = new ItemAdapter(filteredList);
         recyclerView.setAdapter(adapter);
-
-        // Show/hide empty state
+        
         binding.emptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
@@ -136,6 +135,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -145,12 +145,13 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             String image = jsonObject.getString("image");
                             nestedList.add(items);
                             imageList.add(image);
+                            codeNameList.add(codeName);
                         } catch (JSONException e) {
                             Log.e("JSON_ERROR", "Error parsing JSON", e);
                         }
                     }
                     if (!nestedList.isEmpty()) {
-                        DataModel newModel = new DataModel(nestedList, imageList, "Redmi Series");
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Redmi Series");
                         mList.add(newModel);
                         filteredList.add(newModel);
                         adapter.notifyDataSetChanged();
@@ -175,6 +176,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -183,12 +185,13 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             String codeName = jsonObject.getString("codename");
                             String image = jsonObject.getString("image");
                             nestedList.add(items);
+                            codeNameList.add(codeName);
                             imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "MI Series");
+                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "MI Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -203,6 +206,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -211,12 +215,13 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             String codeName = jsonObject.getString("codename");
                             String image = jsonObject.getString("image");
                             nestedList.add(items);
+                            codeNameList.add(codeName);
                             imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Redmi Note Series");
+                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Redmi Note Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -231,6 +236,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
+                    List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
@@ -239,12 +245,13 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             String codeName = jsonObject.getString("codename");
                             String image = jsonObject.getString("image");
                             nestedList.add(items);
+                            codeNameList.add(codeName);
                             imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Poco Series");
+                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Poco Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -289,11 +296,13 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                 // Add last 5 items from each category
                 for (DataModel model : mList) {
                     List<String> items = model.getItems();
+                    List<String> codeNames = model.getCodeNames();
                     List<String> images = model.getImageUrls();
                     int start = Math.max(0, items.size() - 5);
                     List<String> recentItems = items.subList(start, items.size());
+                    List<String> recentCodeNames = codeNames.subList(start, codeNames.size());
                     List<String> recentImages = images.subList(start, images.size());
-                    filteredList.add(new DataModel(recentItems, recentImages, model.getTitle()));
+                    filteredList.add(new DataModel(recentItems, recentImages, recentCodeNames, model.getTitle()));
                 }
                 break;
             case "favorite":
@@ -301,8 +310,10 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                 SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
                 for (DataModel model : mList) {
                     List<String> favoriteItems = new ArrayList<>();
+                    List<String> favoriteCodeNames = new ArrayList<>();
                     List<String> favoriteImages = new ArrayList<>();
                     List<String> items = model.getItems();
+                    List<String> codeNames = model.getCodeNames();
                     List<String> images = model.getImageUrls();
                     for (int i = 0; i < items.size(); i++) {
                         String item = items.get(i);
@@ -312,7 +323,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                         }
                     }
                     if (!favoriteItems.isEmpty()) {
-                        filteredList.add(new DataModel(favoriteItems, favoriteImages, model.getTitle()));
+                        filteredList.add(new DataModel(favoriteItems, favoriteImages, favoriteCodeNames, model.getTitle()));
                     }
                 }
                 break;

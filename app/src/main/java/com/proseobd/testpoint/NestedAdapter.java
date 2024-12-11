@@ -21,12 +21,14 @@ import java.util.List;
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedViewHolder> {
     private List<String> itemList;
     private List<String> imageList;
+    private List<String> codeNameList;
     private Dialog imageDialog;
     private float currentZoom = 1.0f;
 
-    public NestedAdapter(List<String> itemList, List<String> imageList) {
+    public NestedAdapter(List<String> itemList, List<String> imageList, List<String> codeNameList) {
         this.itemList = itemList;
         this.imageList = imageList;
+        this.codeNameList = codeNameList;
     }
 
     @NonNull
@@ -39,6 +41,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
     @Override
     public void onBindViewHolder(@NonNull NestedViewHolder holder, int position) {
         holder.mTv.setText(itemList.get(position));
+        holder.nestedItemCodeName.setText(codeNameList.get(position));
         
         String imageUrl = imageList.get(position);
         Glide.with(holder.itemView.getContext())

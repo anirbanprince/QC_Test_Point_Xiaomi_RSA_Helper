@@ -47,7 +47,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         NestedAdapter nestedAdapter = new NestedAdapter(
             model.getNestedList(),
-            model.getImageUrls()
+            model.getImageUrls(),
+            model.getCodeNames()
         );
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
