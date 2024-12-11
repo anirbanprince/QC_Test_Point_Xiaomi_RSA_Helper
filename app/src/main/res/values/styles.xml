@@ -12,4 +12,9 @@
     <style name="BottomSheetStyle" parent="Widget.Material3.BottomSheet">
         <item name="android:background">@drawable/bottom_sheet_background</item>
     </style>
+
+    <style name="ThemeSelectionDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    </style>
 </resources> 

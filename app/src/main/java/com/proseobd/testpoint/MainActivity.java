@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentFactory;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import com.proseobd.testpoint.databinding.ActivityMainBinding;
 
@@ -67,17 +68,13 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
 
+        // Initialize theme from saved preference
+        int savedThemeMode = sharedPreferences.getInt("ThemeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(savedThemeMode);
+
         // Set initial theme
         MenuItem themeItem = navigationView.getMenu().findItem(R.id.nightmode);
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            themeItem.setTitle("Light Mode");
-            themeItem.setIcon(R.drawable.ic_light_mode);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            themeItem.setTitle("Dark Mode");
-            themeItem.setIcon(R.drawable.ic_dark_mode);
-        }
+        updateThemeMenuIcon(themeItem, savedThemeMode);
 
         // Add fragment transitions
         getSupportFragmentManager().setFragmentFactory(new FragmentFactory());
@@ -185,51 +182,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toggleTheme() {
-        boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Create theme options
+        String[] themes = {"Light", "Dark", "System Default"};
+        int currentTheme = sharedPreferences.getInt("ThemeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        int selectedTheme = 2; // Default to System
         
-        // Save the current fragment state
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame);
-        String currentFragmentTag = currentFragment != null ? currentFragment.getClass().getName() : null;
-        
-        MenuItem themeItem = navigationView.getMenu().findItem(R.id.nightmode);
-        
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            editor.putBoolean("NightMode", false);
-            themeItem.setTitle("Dark Mode");
-            themeItem.setIcon(R.drawable.ic_dark_mode);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            editor.putBoolean("NightMode", true);
-            themeItem.setTitle("Light Mode");
-            themeItem.setIcon(R.drawable.ic_light_mode);
+        switch (currentTheme) {
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                selectedTheme = 0;
+                break;
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                selectedTheme = 1;
+                break;
+            case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+                selectedTheme = 2;
+                break;
         }
-        
-        editor.apply();
-        
-        // Instead of recreate(), use delegate to handle configuration change
-        getDelegate().applyDayNight();
-        
-        // Restore the fragment state if needed
-        if (currentFragmentTag != null) {
-            try {
-                Fragment newFragment = getSupportFragmentManager()
-                    .getFragmentFactory()
-                    .instantiate(getClassLoader(), currentFragmentTag);
+
+        new MaterialAlertDialogBuilder(this, R.style.ThemeSelectionDialog)
+            .setTitle("Choose Theme")
+            .setSingleChoiceItems(themes, selectedTheme, (dialog, which) -> {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                int themeMode;
                 
-                getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.fade_in,
-                        R.anim.fade_out,
-                        R.anim.fade_in,
-                        R.anim.fade_out
-                    )
-                    .replace(R.id.frame, newFragment)
-                    .commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                switch (which) {
+                    case 0: // Light
+                        themeMode = AppCompatDelegate.MODE_NIGHT_NO;
+                        break;
+                    case 1: // Dark
+                        themeMode = AppCompatDelegate.MODE_NIGHT_YES;
+                        break;
+                    default: // System Default
+                        themeMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+                        break;
+                }
+                
+                editor.putInt("ThemeMode", themeMode);
+                editor.apply();
+                
+                // Apply the theme
+                AppCompatDelegate.setDefaultNightMode(themeMode);
+                
+                // Update menu item icon and title
+                MenuItem themeItem = navigationView.getMenu().findItem(R.id.nightmode);
+                updateThemeMenuIcon(themeItem, themeMode);
+                
+                dialog.dismiss();
+            })
+            .show();
+    }
+
+    private void updateThemeMenuIcon(MenuItem themeItem, int themeMode) {
+        switch (themeMode) {
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                themeItem.setIcon(R.drawable.ic_dark_mode);
+                themeItem.setTitle("Theme (Light)");
+                break;
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                themeItem.setIcon(R.drawable.ic_light_mode);
+                themeItem.setTitle("Theme (Dark)");
+                break;
+            default:
+                themeItem.setIcon(R.drawable.ic_auto_mode);
+                themeItem.setTitle("Theme (System)");
+                break;
         }
     }
 }
