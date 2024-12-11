@@ -22,8 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.App.TitleLarge"
         android:textColor="?attr/colorOnPrimary"
         android:layout_marginTop="16dp"/>
 
@@ -31,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="v1.0.0"
+        android:textAppearance="@style/TextAppearance.App.BodyMedium"
         android:textColor="?attr/colorOnPrimary"
         android:alpha="0.8"
         android:layout_marginTop="4dp"/>
