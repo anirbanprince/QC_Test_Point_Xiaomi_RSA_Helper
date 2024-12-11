@@ -2,21 +2,33 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.QCTestPointXiaomiRSAHelper" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 
     <style name="Theme.TestPoint" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primaryDark</item>
-        <item name="colorPrimaryContainer">@color/primaryDarkLight</item>
-        <item name="colorOnPrimary">@color/onPrimaryDark</item>
-        <item name="colorSecondary">@color/accentDark</item>
-        <item name="colorSurface">@color/surfaceDark</item>
-        <item name="colorOnSurface">@color/textPrimaryDark</item>
-        <item name="android:colorBackground">@color/backgroundDark</item>
+        <item name="colorPrimary">@color/primary_night</item>
+        <item name="colorPrimaryContainer">@color/primary_night_dark</item>
+        <item name="colorOnPrimary">@color/onPrimary_night</item>
+        <item name="colorSecondary">@color/accent_night</item>
+        <item name="colorSurface">@color/surface_night</item>
+        <item name="colorOnSurface">@color/onSurface_night</item>
+        <item name="android:colorBackground">@color/background_night</item>
+        <item name="android:textColorPrimary">@color/textPrimary_night</item>
+        <item name="android:textColorSecondary">@color/textSecondary_night</item>
+        <item name="android:textColorHint">@color/hint_night</item>
         
+        <!-- System bars -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+    <!-- Override SearchView style for dark mode -->
+    <style name="Widget.App.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="queryHint">Search test points...</item>
+        <item name="android:textColorHint">@color/hint_night</item>
+        <item name="android:textColor">@color/textPrimary_night</item>
     </style>
 </resources>

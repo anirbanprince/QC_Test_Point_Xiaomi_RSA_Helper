@@ -15,13 +15,17 @@
     <color name="onPrimary">#FFFFFF</color>
 
     <!-- Dark Theme Colors -->
-    <color name="primaryDarkLight">#FF7043</color>
-    <color name="onPrimaryDark">#000000</color>
-    <color name="accentDark">#FFB74D</color>
-    <color name="surfaceDark">#121212</color>
-    <color name="textPrimaryDark">#FFFFFF</color>
-    <color name="backgroundDark">#000000</color>
-    
+    <color name="primary_night">#BB86FC</color>
+    <color name="primary_night_dark">#3700B3</color>
+    <color name="onPrimary_night">#FFFFFF</color>
+    <color name="accent_night">#03DAC6</color>
+    <color name="surface_night">#121212</color>
+    <color name="textPrimary_night">#FFFFFF</color>
+    <color name="textSecondary_night">#B3FFFFFF</color>
+    <color name="background_night">#121212</color>
+    <color name="onSurface_night">#FFFFFF</color>
+    <color name="hint_night">#80FFFFFF</color>
+
     <!-- Shimmer Color -->
     <color name="shimmer_color">#DDDDDD</color>
 </resources>

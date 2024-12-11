@@ -19,6 +19,7 @@ import androidx.core.app.ShareCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.WindowCompat;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -57,10 +58,17 @@ public class MainActivity extends AppCompatActivity {
         // Load theme preference
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
+
+        // Set initial theme
+        MenuItem themeItem = navigationView.getMenu().findItem(R.id.nightmode);
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            themeItem.setTitle("Light Mode");
+            themeItem.setIcon(R.drawable.ic_light_mode);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            themeItem.setTitle("Dark Mode");
+            themeItem.setIcon(R.drawable.ic_dark_mode);
         }
 
         // Add fragment transitions
@@ -123,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.notification) {
                     Toast.makeText(MainActivity.this, "Notification", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.nightmode) {
-
+                    toggleTheme();
                 } else if (item.getItemId() == R.id.Other) {
                     Toast.makeText(MainActivity.this, "Other Apps", Toast.LENGTH_SHORT).show();
                 }
@@ -166,5 +174,54 @@ public class MainActivity extends AppCompatActivity {
                 .setChooserTitle("Share via")
                 .createChooserIntent();
         startActivity(shareIntent);
+    }
+
+    private void toggleTheme() {
+        boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        
+        // Save the current fragment state
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame);
+        String currentFragmentTag = currentFragment != null ? currentFragment.getClass().getName() : null;
+        
+        MenuItem themeItem = navigationView.getMenu().findItem(R.id.nightmode);
+        
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            editor.putBoolean("NightMode", false);
+            themeItem.setTitle("Dark Mode");
+            themeItem.setIcon(R.drawable.ic_dark_mode);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            editor.putBoolean("NightMode", true);
+            themeItem.setTitle("Light Mode");
+            themeItem.setIcon(R.drawable.ic_light_mode);
+        }
+        
+        editor.apply();
+        
+        // Instead of recreate(), use delegate to handle configuration change
+        getDelegate().applyDayNight();
+        
+        // Restore the fragment state if needed
+        if (currentFragmentTag != null) {
+            try {
+                Fragment newFragment = getSupportFragmentManager()
+                    .getFragmentFactory()
+                    .instantiate(getClassLoader(), currentFragmentTag);
+                
+                getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out,
+                        R.anim.fade_in,
+                        R.anim.fade_out
+                    )
+                    .replace(R.id.frame, newFragment)
+                    .commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -23,7 +23,7 @@
         <item
             android:id="@+id/nightmode"
             android:title="Night Mode"
-            android:icon="@drawable/night"
+            android:icon="@drawable/ic_dark_mode"
             app:showAsAction="always"
             android:checkable="true"
             />
