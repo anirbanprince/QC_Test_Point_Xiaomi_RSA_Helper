@@ -26,7 +26,6 @@ import androidx.appcompat.widget.SearchView;
 import java.util.Locale;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Filter;
 
 import java.util.Collections;
 
@@ -128,15 +127,15 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         binding.shimmerLayout.setVisibility(View.VISIBLE);
         binding.shimmerLayout.startShimmer();
         
-        loadData4();
-        loadData3();
-        loadData2();
-        loadData();
+        loadDataPocoSeries();
+        loadDataRedmiNoteSeries();
+        loadDataMISeries();
+        loadRedmiSeriesData();
     }
 
-    private void loadData() {
+    private void loadRedmiSeriesData() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/fuljhuridirectory/upmembers/view.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/redmi_series/data.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -144,8 +143,9 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
-                            String items = jsonObject.getString("name");
-                            String image = jsonObject.getString("profileImage");
+                            String items = jsonObject.getString("modelname");
+                            String codeName = jsonObject.getString("codename");
+                            String image = jsonObject.getString("image");
                             nestedList.add(items);
                             imageList.add(image);
                         } catch (JSONException e) {
@@ -153,7 +153,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                         }
                     }
                     if (!nestedList.isEmpty()) {
-                        DataModel newModel = new DataModel(nestedList, imageList, "UP Members");
+                        DataModel newModel = new DataModel(nestedList, imageList, "Redmi Series");
                         mList.add(newModel);
                         filteredList.add(newModel);
                         adapter.notifyDataSetChanged();
@@ -172,9 +172,9 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         requestQueue.add(jsonArrayRequest);
     }
 
-    private void loadData2() {
+    private void loadDataMISeries() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/fuljhuridirectory/Jewellers/view.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/mi_series/data.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -182,15 +182,16 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
-                            String items = jsonObject.getString("name");
-                            String image = jsonObject.getString("profileImage");
+                            String items = jsonObject.getString("modelname");
+                            String codeName = jsonObject.getString("codename");
+                            String image = jsonObject.getString("image");
                             nestedList.add(items);
                             imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Jewellers");
+                    DataModel newModel = new DataModel(nestedList, imageList, "MI Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -199,9 +200,9 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         requestQueue.add(jsonArrayRequest);
     }
 
-    private void loadData3() {
+    private void loadDataRedmiNoteSeries() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/fuljhuridirectory/farmecy/view.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/redmi_note_series/data.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -209,15 +210,16 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
-                            String items = jsonObject.getString("name");
-                            String image = jsonObject.getString("profileImage");
+                            String items = jsonObject.getString("modelname");
+                            String codeName = jsonObject.getString("codename");
+                            String image = jsonObject.getString("image");
                             nestedList.add(items);
                             imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Pharmacy");
+                    DataModel newModel = new DataModel(nestedList, imageList, "Redmi Note Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -226,9 +228,9 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         requestQueue.add(jsonArrayRequest);
     }
 
-    private void loadData4() {
+    private void loadDataPocoSeries() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/fuljhuridirectory/workshop/view.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/poco_series/data.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -236,15 +238,16 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
-                            String items = jsonObject.getString("name");
-                            String image = jsonObject.getString("profileImage");
+                            String items = jsonObject.getString("modelname");
+                            String codeName = jsonObject.getString("codename");
+                            String image = jsonObject.getString("image");
                             nestedList.add(items);
                             imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, "Workshop");
+                    DataModel newModel = new DataModel(nestedList, imageList, "Poco Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);

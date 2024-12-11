@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.HapticFeedbackConstants;
 import android.widget.FrameLayout;
 import android.widget.Toast;

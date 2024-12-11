@@ -31,10 +31,9 @@ public class FirstFragment extends Fragment {
         cvTestPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getActivity().getSupportFragmentManager().beginTransaction()
-                       .replace(R.id.frame,new Test_PointFragment())
-                       .addToBackStack(null).commit();
-
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame,new Test_PointFragment())
+                        .addToBackStack(null).commit();
             }
         });
 
