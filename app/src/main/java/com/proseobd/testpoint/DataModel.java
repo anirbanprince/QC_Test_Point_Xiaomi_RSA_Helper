@@ -5,11 +5,13 @@ import java.util.List;
 public class DataModel {
 
     private List<String> items;
+    private List<String> imageUrls;
     private String title;
     private boolean expandable;
 
-    public DataModel(List<String> items, String title) {
+    public DataModel(List<String> items, List<String> imageUrls, String title) {
         this.items = items;
+        this.imageUrls = imageUrls;
         this.title = title;
         this.expandable = false;
     }
@@ -36,5 +38,9 @@ public class DataModel {
 
     public void setExpandable(boolean expandable) {
         this.expandable = expandable;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 }

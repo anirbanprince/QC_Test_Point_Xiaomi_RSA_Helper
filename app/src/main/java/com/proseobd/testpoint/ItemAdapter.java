@@ -45,10 +45,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.mArrowImage.setImageResource(R.drawable.down);
         }
 
-        NastedAdapter adapter = new NastedAdapter(model.getNestedList());
+        NestedAdapter nestedAdapter = new NestedAdapter(
+            model.getNestedList(),
+            model.getImageUrls()
+        );
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
-        holder.nestedRecyclerView.setAdapter(adapter);
+        holder.nestedRecyclerView.setAdapter(nestedAdapter);
         holder.linearLayout.setOnClickListener(v -> {
             model.setExpandable(!model.isExpandable());
             notifyItemChanged(holder.getAdapterPosition());

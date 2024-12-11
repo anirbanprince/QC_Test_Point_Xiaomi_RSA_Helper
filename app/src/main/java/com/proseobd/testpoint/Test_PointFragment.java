@@ -102,14 +102,17 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 
                 // Check if any item in nested list matches
                 List<String> nestedItems = new ArrayList<>();
-                for (String item : model.getNestedList()) {
+                List<String> nestedImages = new ArrayList<>();
+                for (int i = 0; i < model.getNestedList().size(); i++) {
+                    String item = model.getNestedList().get(i);
                     if (item.toLowerCase(Locale.getDefault()).contains(lowercaseQuery)) {
                         nestedItems.add(item);
+                        nestedImages.add(model.getImageUrls().get(i));
                     }
                 }
                 
                 if (!nestedItems.isEmpty()) {
-                    filteredList.add(new DataModel(nestedItems, model.getItemText()));
+                    filteredList.add(new DataModel(nestedItems, nestedImages, model.getTitle()));
                 }
             }
         }
@@ -136,18 +139,21 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         String url = "https://proseobd.com/apps/fuljhuridirectory/upmembers/view.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
-                    List<String> nestedList1 = new ArrayList<>();
+                    List<String> nestedList = new ArrayList<>();
+                    List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
                             String items = jsonObject.getString("name");
-                            nestedList1.add(items);
+                            String image = jsonObject.getString("profileImage");
+                            nestedList.add(items);
+                            imageList.add(image);
                         } catch (JSONException e) {
                             Log.e("JSON_ERROR", "Error parsing JSON", e);
                         }
                     }
-                    if (!nestedList1.isEmpty()) {
-                        DataModel newModel = new DataModel(nestedList1, "UP Members");
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, "UP Members");
                         mList.add(newModel);
                         filteredList.add(newModel);
                         adapter.notifyDataSetChanged();
@@ -171,17 +177,20 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         String url = "https://proseobd.com/apps/fuljhuridirectory/Jewellers/view.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
-                    List<String> nestedList2 = new ArrayList<>();
+                    List<String> nestedList = new ArrayList<>();
+                    List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
                             String items = jsonObject.getString("name");
-                            nestedList2.add(items);
+                            String image = jsonObject.getString("profileImage");
+                            nestedList.add(items);
+                            imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList2, "Jewellers");
+                    DataModel newModel = new DataModel(nestedList, imageList, "Jewellers");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -195,17 +204,20 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         String url = "https://proseobd.com/apps/fuljhuridirectory/farmecy/view.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
-                    List<String> nestedList3 = new ArrayList<>();
+                    List<String> nestedList = new ArrayList<>();
+                    List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
                             String items = jsonObject.getString("name");
-                            nestedList3.add(items);
+                            String image = jsonObject.getString("profileImage");
+                            nestedList.add(items);
+                            imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList3, "Pharmacy");
+                    DataModel newModel = new DataModel(nestedList, imageList, "Pharmacy");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -219,17 +231,20 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
         String url = "https://proseobd.com/apps/fuljhuridirectory/workshop/view.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
-                    List<String> nestedList4 = new ArrayList<>();
+                    List<String> nestedList = new ArrayList<>();
+                    List<String> imageList = new ArrayList<>();
                     for (int x = 0; x < response.length(); x++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(x);
                             String items = jsonObject.getString("name");
-                            nestedList4.add(items);
+                            String image = jsonObject.getString("profileImage");
+                            nestedList.add(items);
+                            imageList.add(image);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList4, "Workshop");
+                    DataModel newModel = new DataModel(nestedList, imageList, "Workshop");
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
@@ -274,9 +289,11 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 // Add last 5 items from each category
                 for (DataModel model : mList) {
                     List<String> items = model.getItems();
+                    List<String> images = model.getImageUrls();
                     int start = Math.max(0, items.size() - 5);
                     List<String> recentItems = items.subList(start, items.size());
-                    filteredList.add(new DataModel(recentItems, model.getTitle()));
+                    List<String> recentImages = images.subList(start, images.size());
+                    filteredList.add(new DataModel(recentItems, recentImages, model.getTitle()));
                 }
                 break;
             case "favorite":
@@ -284,13 +301,18 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                 SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
                 for (DataModel model : mList) {
                     List<String> favoriteItems = new ArrayList<>();
-                    for (String item : model.getItems()) {
+                    List<String> favoriteImages = new ArrayList<>();
+                    List<String> items = model.getItems();
+                    List<String> images = model.getImageUrls();
+                    for (int i = 0; i < items.size(); i++) {
+                        String item = items.get(i);
                         if (prefs.getBoolean(item, false)) {
                             favoriteItems.add(item);
+                            favoriteImages.add(images.get(i));
                         }
                     }
                     if (!favoriteItems.isEmpty()) {
-                        filteredList.add(new DataModel(favoriteItems, model.getTitle()));
+                        filteredList.add(new DataModel(favoriteItems, favoriteImages, model.getTitle()));
                     }
                 }
                 break;
