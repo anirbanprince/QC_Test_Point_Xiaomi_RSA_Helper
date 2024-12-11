@@ -47,7 +47,8 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
         String imageUrl = imageList.get(position);
         Glide.with(holder.itemView.getContext())
             .load(imageUrl)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_dialog_alert)
             .into(holder.imageView);
@@ -67,7 +68,8 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
 
         Glide.with(context)
             .load(imageUrl)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_dialog_alert)
             .into(popupImage);

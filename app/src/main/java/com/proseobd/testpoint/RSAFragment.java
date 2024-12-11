@@ -236,6 +236,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         String url = "https://proseobd.com/apps/Test_Point/rsa_helper/poco_series/data.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
+
                     List<String> nestedList = new ArrayList<>();
                     List<String> codeNameList = new ArrayList<>();
                     List<String> imageList = new ArrayList<>();
