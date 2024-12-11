@@ -153,7 +153,7 @@ public class Test_PointFragment extends Fragment implements FilterBottomSheetFra
                         }
                     }
                     if (!nestedList.isEmpty()) {
-                        DataModel newModel = new DataModel(nestedList, imageList, "Redmi Series");
+                        DataModel newModel = new DataModel(nestedList, imageList, "Redgghgmi Series");
                         mList.add(newModel);
                         filteredList.add(newModel);
                         adapter.notifyDataSetChanged();

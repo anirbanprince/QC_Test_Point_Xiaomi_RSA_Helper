@@ -89,13 +89,14 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
     }
 
     public class NestedViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTv;
+        private TextView mTv, nestedItemCodeName;
         private ImageView imageView;
 
         public NestedViewHolder(@NonNull View itemView) {
             super(itemView);
             mTv = itemView.findViewById(R.id.nestedItemTv);
             imageView = itemView.findViewById(R.id.image);
+            nestedItemCodeName = itemView.findViewById(R.id.nestedItemCodeName);
         }
     }
 } 
