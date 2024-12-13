@@ -99,20 +99,21 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         } else {
             String lowercaseQuery = query.toLowerCase(Locale.getDefault());
             for (DataModel model : mList) {
-                if (model.getItemText().toLowerCase(Locale.getDefault()).contains(lowercaseQuery)) {
-                    filteredList.add(model);
-                    continue;
-                }
-                
                 List<String> nestedItems = new ArrayList<>();
                 List<String> nestedImages = new ArrayList<>();
                 List<String> nestedCodeNames = new ArrayList<>();
+                
+                // Search through both items and codeNames
                 for (int i = 0; i < model.getNestedList().size(); i++) {
                     String item = model.getNestedList().get(i);
-                    if (item.toLowerCase(Locale.getDefault()).contains(lowercaseQuery)) {
+                    String codeName = model.getCodeNames().get(i);
+                    
+                    // Check if either item name or code name contains the search query
+                    if (item.toLowerCase(Locale.getDefault()).contains(lowercaseQuery) || 
+                        codeName.toLowerCase(Locale.getDefault()).contains(lowercaseQuery)) {
                         nestedItems.add(item);
                         nestedImages.add(model.getImageUrls().get(i));
-                        nestedCodeNames.add(model.getCodeNames().get(i));
+                        nestedCodeNames.add(codeName);
                     }
                 }
                 
@@ -123,7 +124,6 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         }
         
         adapter.notifyDataSetChanged();
-        
         binding.emptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
