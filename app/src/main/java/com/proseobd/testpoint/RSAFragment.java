@@ -41,6 +41,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
     private List<DataModel> filteredList;
     private ItemAdapter adapter;
     private SearchView searchView;
+    private int completedRequests = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,7 +129,6 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         
         binding.shimmerLayout.setVisibility(View.VISIBLE);
         binding.shimmerLayout.startShimmer();
-        binding.swipeRefresh.setRefreshing(true);
         
         loadDataPocoSeries();
         loadDataRedmiNoteSeries();
@@ -202,8 +202,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "MI Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
-                    adapter = new ItemAdapter(filteredList);
-                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }, error -> {
             Log.d("merr", error.getMessage().toString());
                     showError(error.getMessage());
@@ -242,8 +241,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Redmi Note Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
-                    adapter = new ItemAdapter(filteredList);
-                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }, error -> {
             Log.d("rnerr", error.getMessage().toString());
                     showError(error.getMessage());
@@ -283,8 +281,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Poco Series");
                     mList.add(newModel);
                     filteredList.add(newModel);
-                    adapter = new ItemAdapter(filteredList);
-                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }, error -> {
             Log.d("perr", error.getMessage().toString());
                     showError(error.getMessage());
@@ -300,10 +297,12 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
     }
 
     private void checkDataLoadComplete() {
-        if (mList.size() >= 4) {  // All data sources loaded
+        completedRequests++;
+        if (completedRequests >= 4) {  // Check completed requests instead of mList size
             binding.shimmerLayout.stopShimmer();
             binding.shimmerLayout.setVisibility(View.GONE);
             binding.swipeRefresh.setRefreshing(false);
+            completedRequests = 0;  // Reset for next refresh
             
             if (mList.isEmpty()) {
                 showEmptyState();
