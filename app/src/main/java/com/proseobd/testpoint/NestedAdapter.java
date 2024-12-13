@@ -2,6 +2,9 @@ package com.proseobd.testpoint;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.List;
@@ -49,6 +57,25 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
             .load(imageUrl)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_dialog_alert)
+            .override(500, 500)
+            .encodeFormat(Bitmap.CompressFormat.JPEG)
+            .encodeQuality(80)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .listener(new RequestListener<>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                            @NonNull Target<Drawable> target, boolean isFirstResource) {
+                    Log.e("ImageLoading", "Failed to load: " + imageUrl, e);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model,
+                                               Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
+                    Log.d("ImageLoading", "Successfully loaded: " + imageUrl);
+                    return false;
+                }
+            })
             .into(holder.imageView);
 
         holder.layLin.setOnClickListener(v -> showImagePopup(v.getContext(), imageUrl));
@@ -66,10 +93,26 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
 
         Glide.with(context)
             .load(imageUrl)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_dialog_alert)
+            .encodeFormat(Bitmap.CompressFormat.JPEG)
+            .encodeQuality(90)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .listener(new RequestListener<>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                            @NonNull Target<Drawable> target, boolean isFirstResource) {
+                    Log.e("ImageLoading", "Failed to load popup: " + imageUrl, e);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(@NonNull Drawable resource, Object model,
+                                               Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
+                    Log.d("ImageLoading", "Successfully loaded popup: " + imageUrl);
+                    return false;
+                }
+            })
             .into(popupImage);
 
         zoomInButton.setOnClickListener(v -> {
