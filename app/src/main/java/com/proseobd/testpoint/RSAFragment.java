@@ -21,7 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-import com.proseobd.testpoint.databinding.FragmentTestPointBinding;
+import com.proseobd.testpoint.databinding.FragmentRSABinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +34,7 @@ import java.util.Locale;
 
 public class RSAFragment extends Fragment implements FilterBottomSheetFragment.FilterListener{
 
-    private FragmentTestPointBinding binding;
+    private FragmentRSABinding binding;
     private FilterBottomSheetFragment filterSheet;
     private RecyclerView recyclerView;
     private List<DataModel> mList;
@@ -44,15 +44,8 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentTestPointBinding.inflate(inflater, container, false);
+        binding = FragmentRSABinding.inflate(inflater, container, false);
 
-        // Add SwipeRefreshLayout listener
-        binding.swipeRefresh.setOnRefreshListener(() -> {
-            mList.clear();
-            filteredList.clear();
-            adapter.notifyDataSetChanged();
-            loadAllData();
-        });
 
         // Setup filter FAB
         binding.fabFilter.setOnClickListener(v -> {
@@ -172,6 +165,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     }
                     checkDataLoadComplete();
                 }, error -> {
+            Log.d("rerr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -211,6 +205,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     adapter = new ItemAdapter(filteredList);
                     recyclerView.setAdapter(adapter);
                 }, error -> {
+            Log.d("merr", error.getMessage().toString());
                     showError(error.getMessage());
                     checkDataLoadComplete();
                 });
@@ -250,6 +245,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     adapter = new ItemAdapter(filteredList);
                     recyclerView.setAdapter(adapter);
                 }, error -> {
+            Log.d("rnerr", error.getMessage().toString());
                     showError(error.getMessage());
                     checkDataLoadComplete();
                 });
@@ -290,6 +286,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     adapter = new ItemAdapter(filteredList);
                     recyclerView.setAdapter(adapter);
                 }, error -> {
+            Log.d("perr", error.getMessage().toString());
                     showError(error.getMessage());
                     checkDataLoadComplete();
                 });
