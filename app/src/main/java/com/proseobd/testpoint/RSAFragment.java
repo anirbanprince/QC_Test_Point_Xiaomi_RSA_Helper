@@ -47,6 +47,10 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRSABinding.inflate(inflater, container, false);
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            completedRequests = 0;  // Reset counter before loading
+            loadAllData();
+        });
 
         // Setup filter FAB
         binding.fabFilter.setOnClickListener(v -> {
@@ -116,8 +120,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
             }
         }
         
-        adapter = new ItemAdapter(filteredList);
-        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         
         binding.emptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
@@ -203,6 +206,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter.notifyDataSetChanged();
+                    checkDataLoadComplete();
                 }, error -> {
             Log.d("merr", error.getMessage().toString());
                     showError(error.getMessage());
@@ -242,6 +246,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter.notifyDataSetChanged();
+                    checkDataLoadComplete();
                 }, error -> {
             Log.d("rnerr", error.getMessage().toString());
                     showError(error.getMessage());
@@ -282,6 +287,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     mList.add(newModel);
                     filteredList.add(newModel);
                     adapter.notifyDataSetChanged();
+                    checkDataLoadComplete();
                 }, error -> {
             Log.d("perr", error.getMessage().toString());
                     showError(error.getMessage());
