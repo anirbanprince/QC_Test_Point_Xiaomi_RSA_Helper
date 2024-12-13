@@ -46,6 +46,14 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentTestPointBinding.inflate(inflater, container, false);
 
+        // Add SwipeRefreshLayout listener
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            mList.clear();
+            filteredList.clear();
+            adapter.notifyDataSetChanged();
+            loadAllData();
+        });
+
         // Setup filter FAB
         binding.fabFilter.setOnClickListener(v -> {
             filterSheet = new FilterBottomSheetFragment();
@@ -121,9 +129,14 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
     }
 
     private void loadAllData() {
+        // Clear lists before loading new data
+        mList.clear();
+        filteredList.clear();
+        
         binding.shimmerLayout.setVisibility(View.VISIBLE);
         binding.shimmerLayout.startShimmer();
-
+        binding.swipeRefresh.setRefreshing(true);
+        
         loadDataPocoSeries();
         loadDataRedmiNoteSeries();
         loadDataMISeries();
@@ -197,7 +210,16 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
                     recyclerView.setAdapter(adapter);
-                }, error -> {});
+                }, error -> {
+                    showError(error.getMessage());
+                    checkDataLoadComplete();
+                });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         requestQueue.add(jsonArrayRequest);
     }
 
@@ -227,7 +249,16 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
                     recyclerView.setAdapter(adapter);
-                }, error -> {});
+                }, error -> {
+                    showError(error.getMessage());
+                    checkDataLoadComplete();
+                });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         requestQueue.add(jsonArrayRequest);
     }
 
@@ -258,7 +289,16 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     filteredList.add(newModel);
                     adapter = new ItemAdapter(filteredList);
                     recyclerView.setAdapter(adapter);
-                }, error -> {});
+                }, error -> {
+                    showError(error.getMessage());
+                    checkDataLoadComplete();
+                });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         requestQueue.add(jsonArrayRequest);
     }
 
@@ -266,6 +306,8 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         if (mList.size() >= 4) {  // All data sources loaded
             binding.shimmerLayout.stopShimmer();
             binding.shimmerLayout.setVisibility(View.GONE);
+            binding.swipeRefresh.setRefreshing(false);
+            
             if (mList.isEmpty()) {
                 showEmptyState();
             }
