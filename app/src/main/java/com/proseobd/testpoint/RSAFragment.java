@@ -50,6 +50,8 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         binding.swipeRefresh.setOnRefreshListener(() -> {
             completedRequests = 0;  // Reset counter before loading
             loadAllData();
+            binding.swipeRefresh.setRefreshing(false);
+
         });
 
         // Setup filter FAB
