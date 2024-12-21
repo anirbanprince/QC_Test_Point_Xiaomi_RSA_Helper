@@ -132,12 +132,15 @@ public class Test_PointFragment extends Fragment  {
     }
 
     private void loadAllData() {
-        // Clear lists before loading new data
         mList.clear();
         filteredList.clear();
-
         binding.shimmerLayout.setVisibility(View.VISIBLE);
         binding.shimmerLayout.startShimmer();
+
+        RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
+        requestQueue.getCache().clear(); // Clear cache before loading new data
+
+        completedRequests = 0;  // Reset counter before loading
 
         loadOppo();
         loadHuawei();
@@ -607,17 +610,16 @@ public class Test_PointFragment extends Fragment  {
 
 
 
-
     private void checkDataLoadComplete() {
         completedRequests++;
-        if (completedRequests >= 4) {  // Check completed requests instead of mList size
+        if (completedRequests == 11) {
             binding.shimmerLayout.stopShimmer();
             binding.shimmerLayout.setVisibility(View.GONE);
             binding.swipeRefresh.setRefreshing(false);
-            completedRequests = 0;  // Reset for next refresh
-
             if (mList.isEmpty()) {
-                showEmptyState();
+                showError("No data available");
+            } else {
+                adapter.notifyDataSetChanged();
             }
         }
     }

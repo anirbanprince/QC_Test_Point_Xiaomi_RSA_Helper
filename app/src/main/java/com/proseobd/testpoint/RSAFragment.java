@@ -28,8 +28,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class RSAFragment extends Fragment implements FilterBottomSheetFragment.FilterListener{
@@ -48,9 +50,12 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         binding = FragmentRSABinding.inflate(inflater, container, false);
 
         binding.swipeRefresh.setOnRefreshListener(() -> {
+
+            RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
+            requestQueue.getCache().clear(); // Clear cache before refreshing
             completedRequests = 0;  // Reset counter before loading
             loadAllData();
-            binding.swipeRefresh.setRefreshing(false);
+            //binding.swipeRefresh.setRefreshing(false);
 
         });
 
@@ -127,14 +132,17 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
         binding.emptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
+
     private void loadAllData() {
-        // Clear lists before loading new data
         mList.clear();
         filteredList.clear();
-        
         binding.shimmerLayout.setVisibility(View.VISIBLE);
         binding.shimmerLayout.startShimmer();
-        
+
+        RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
+        requestQueue.getCache().clear(); // Clear cache before loading new data
+
+        completedRequests = 0;  // Reset counter before loading
         loadDataPocoSeries();
         loadDataRedmiNoteSeries();
         loadDataMISeries();
@@ -143,7 +151,7 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
 
     private void loadRedmiSeriesData() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/redmi_series/data.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/redmi_series/data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -170,22 +178,29 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                     }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("rerr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
-        });
-
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.put("Pragma", "no-cache");
+                headers.put("Expires", "0");
+                return headers;
+            }
+        };
+        jsonArrayRequest.setShouldCache(false);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         requestQueue.add(jsonArrayRequest);
     }
 
     private void loadDataMISeries() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/mi_series/data.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/mi_series/data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -204,28 +219,38 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "MI Series");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Mi Series");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("merr", error.getMessage().toString());
                     showError(error.getMessage());
                     checkDataLoadComplete();
-                });
+                })
+                {
+                 @Override
+                 public Map<String, String> getHeaders() {
+                     Map<String, String> headers = new HashMap<>();headers.put("Cache-Control", "no-cache, no-store, must-revalidate");
+                 headers.put("Pragma", "no-cache");
+                 headers.put("Expires", "0");
+                return headers;
+                }
+        };
 
+        jsonArrayRequest.setShouldCache(false);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         requestQueue.add(jsonArrayRequest);
     }
 
     private void loadDataRedmiNoteSeries() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/redmi_note_series/data.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/redmi_note_series/data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -238,34 +263,46 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             String codeName = jsonObject.getString("codename");
                             String image = jsonObject.getString("image");
                             nestedList.add(items);
-                            codeNameList.add(codeName);
                             imageList.add(image);
+                            codeNameList.add(codeName);
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            Log.e("JSON_ERROR", "Error parsing JSON", e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Redmi Note Series");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Redmi Note Series");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("rnerr", error.getMessage().toString());
                     showError(error.getMessage());
                     checkDataLoadComplete();
-                });
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.put("Pragma", "no-cache");
+                headers.put("Expires", "0");
+                return headers;
+            }
+        };
 
+        jsonArrayRequest.setShouldCache(false);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         requestQueue.add(jsonArrayRequest);
     }
 
     private void loadDataPocoSeries() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/poco_series/data.php";
+        String url = "https://proseobd.com/apps/Test_Point/rsa_helper/poco_series/data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -285,35 +322,47 @@ public class RSAFragment extends Fragment implements FilterBottomSheetFragment.F
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Poco Series");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Poco Series");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
                     showError(error.getMessage());
                     checkDataLoadComplete();
-                });
+                }) {
 
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.put("Pragma", "no-cache");
+                headers.put("Expires", "0");
+                return headers;
+            }
+        };
+
+        jsonArrayRequest.setShouldCache(false);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         requestQueue.add(jsonArrayRequest);
     }
 
+
     private void checkDataLoadComplete() {
         completedRequests++;
-        if (completedRequests >= 4) {  // Check completed requests instead of mList size
+        if (completedRequests == 4) {
             binding.shimmerLayout.stopShimmer();
             binding.shimmerLayout.setVisibility(View.GONE);
             binding.swipeRefresh.setRefreshing(false);
-            completedRequests = 0;  // Reset for next refresh
-            
             if (mList.isEmpty()) {
-                showEmptyState();
+                showError("No data available");
+            } else {
+                adapter.notifyDataSetChanged();
             }
         }
     }
