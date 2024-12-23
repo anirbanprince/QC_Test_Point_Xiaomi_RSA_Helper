@@ -21,6 +21,7 @@ import com.proseobd.testpoint.databinding.FragmentTestPointBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import androidx.appcompat.widget.SearchView;
@@ -29,6 +30,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.Collections;
+import java.util.Map;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.android.volley.DefaultRetryPolicy;
@@ -159,7 +161,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadXiaomi() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/xiaomi_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/xiaomi_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -186,10 +188,18 @@ public class Test_PointFragment extends Fragment  {
                     }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("rerr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.put("Pragma", "no-cache");
+                headers.put("Expires", "0");
+                return headers;
+            }
+        };
 
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
@@ -220,16 +230,26 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Samsung");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Samsung");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("merr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.put("Pragma", "no-cache");
+                headers.put("Expires", "0");
+                return headers;
+            }
+        };
 
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
@@ -241,7 +261,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadHuawei() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/huawei_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/huawei_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
@@ -260,13 +280,13 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Huawei");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
-                    checkDataLoadComplete();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Huawei");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                 }, error -> {
-            Log.d("rnerr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -281,7 +301,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadOppo() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/oppo_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/oppo_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -301,13 +321,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Oppo");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Oppo");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -322,7 +343,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadRealme() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/realme_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/realme_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -342,13 +363,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Realme");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Realme");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -363,7 +385,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadVivo() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/vivo_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/vivo_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -383,13 +405,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Vivo");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Vivo");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -404,7 +427,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadZTE() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/zte_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/zte_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -424,13 +447,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"ZTE");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "ZTE");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -445,7 +469,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadNokia() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/nokia_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/nokia_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -465,13 +489,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Nokia");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Nokia");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -486,7 +511,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadMotorola() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/motorola_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/motorola_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -506,13 +531,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Motorola");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Motorola");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -527,7 +553,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadOnePlus() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/oneplus_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/oneplus_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -547,13 +573,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"OnePlus");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "One Plus");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
@@ -568,7 +595,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadTecno() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/tecno_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/tecno_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
 
@@ -588,13 +615,14 @@ public class Test_PointFragment extends Fragment  {
                             throw new RuntimeException(e);
                         }
                     }
-                    DataModel newModel = new DataModel(nestedList, imageList, codeNameList,"Tecno");
-                    mList.add(newModel);
-                    filteredList.add(newModel);
-                    adapter.notifyDataSetChanged();
+                    if (!nestedList.isEmpty()) {
+                        DataModel newModel = new DataModel(nestedList, imageList, codeNameList, "Tecno");
+                        mList.add(newModel);
+                        filteredList.add(newModel);
+                        adapter.notifyDataSetChanged();
+                    }
                     checkDataLoadComplete();
                 }, error -> {
-            Log.d("perr", error.getMessage().toString());
             showError(error.getMessage());
             checkDataLoadComplete();
         });
