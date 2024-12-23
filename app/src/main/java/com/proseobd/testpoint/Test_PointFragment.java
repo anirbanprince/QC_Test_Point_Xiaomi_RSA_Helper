@@ -211,7 +211,7 @@ public class Test_PointFragment extends Fragment  {
 
     private void loadSamsung() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/samsung_data.php";
+        String url = "https://proseobd.com/apps/Test_Point/test_point/apis/samsung_data.php?timestamp=" + System.currentTimeMillis();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
                 response -> {
                     List<String> nestedList = new ArrayList<>();
