@@ -51,9 +51,11 @@ public class Test_PointFragment extends Fragment  {
         binding = FragmentTestPointBinding.inflate(inflater, container, false);
 
         binding.swipeRefresh.setOnRefreshListener(() -> {
+            RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
+            requestQueue.getCache().clear(); // Clear cache before refreshing
             completedRequests = 0;  // Reset counter before loading
             loadAllData();
-            binding.swipeRefresh.setRefreshing(false);
+            //binding.swipeRefresh.setRefreshing(false);
 
         });
 
@@ -523,7 +525,6 @@ public class Test_PointFragment extends Fragment  {
         requestQueue.add(jsonArrayRequest);
     }
 
-
     private void loadOnePlus() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
         String url = "https://proseobd.com/apps/Test_Point/test_point/apis/oneplus_data.php";
@@ -564,8 +565,6 @@ public class Test_PointFragment extends Fragment  {
 
         requestQueue.add(jsonArrayRequest);
     }
-
-
 
     private void loadTecno() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
