@@ -53,7 +53,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
         holder.nestedItemCodeName.setText(codeNameList.get(position));
         
         String imageUrl = imageList.get(position);
-        Glide.with(holder.itemView.getContext())
+       /* Glide.with(holder.itemView.getContext())
             .load(imageUrl)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_dialog_alert)
@@ -77,6 +77,8 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
                 }
             })
             .into(holder.imageView);
+
+        */
 
         holder.layLin.setOnClickListener(v -> showImagePopup(v.getContext(), imageUrl));
     }
