@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class FirstFragment extends Fragment {
 
     CardView cvTestPoint, cvRSA, cvISP;
@@ -31,7 +33,7 @@ public class FirstFragment extends Fragment {
         cvTestPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame,new Test_PointFragment())
                         .addToBackStack(null).commit();
             }
@@ -42,7 +44,7 @@ public class FirstFragment extends Fragment {
         cvRSA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
+                requireActivity().getSupportFragmentManager()
                         .beginTransaction().replace(R.id.frame,new RSAFragment())
                         .addToBackStack(null).commit();
             }
@@ -51,7 +53,7 @@ public class FirstFragment extends Fragment {
         cvISP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
+                requireActivity().getSupportFragmentManager()
                         .beginTransaction().replace(R.id.frame, new ISPFragment())
                         .addToBackStack(null).commit();
             }
